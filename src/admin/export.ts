@@ -12,6 +12,8 @@ import * as netherlands from './export-netherlands';
 import { Brevet } from '../types';
 import { getDisplayTitle } from '../display-title';
 import { buildClubRegistry, enrichBrevets } from './enrich-clubs';
+import { eventKey, mergeRecords } from './merge';
+import { stableHash } from './id-utils';
 
 const {
   ALGOLIA_APP = '',
@@ -54,43 +56,49 @@ async function fetchAllData() {
   return results.flat();
 }
 
+type Geoloc = { lat: number; lng: number };
+
 async function getExistingData() {
   const existingObjectIDs = new Set<string>();
-  const existingGeo = new Map<string, { lat: number; lng: number }>();
+  const existingGeoById = new Map<string, Geoloc>();
+  const existingGeoByEventKey = new Map<string, Geoloc>();
 
   if (SKIP_INDEX) {
     console.warn('SKIP_INDEX is set, skipping fetching existing data from Algolia');
-    return { existingObjectIDs, existingGeo };
+    return { existingObjectIDs, existingGeoById, existingGeoByEventKey };
   }
 
   const client = algoliasearch(ALGOLIA_APP, ALGOLIA_WRITE);
-  await client.initIndex('brevets').browseObjects({
-    attributesToRetrieve: ['objectID', '_geoloc'],
+  await client.initIndex('brevets').browseObjects<Brevet>({
+    attributesToRetrieve: ['objectID', '_geoloc', 'date', 'distance', 'country', 'city'],
     batch: (objects) => {
       objects.forEach((object) => {
         existingObjectIDs.add(object.objectID);
         const geoLoc = (object as any)._geoloc?.[0];
         if (geoLoc?.lat && geoLoc?.lng) {
-          existingGeo.set(object.objectID, geoLoc);
+          existingGeoById.set(object.objectID, geoLoc);
+          existingGeoByEventKey.set(eventKey(object), geoLoc);
         }
       });
     },
   });
 
-  return { existingObjectIDs, existingGeo };
+  return { existingObjectIDs, existingGeoById, existingGeoByEventKey };
 }
 
-type Geoloc = { lat: number; lng: number };
-
-function inheritGeoloc(brevet: Brevet, existingGeo: Map<string, Geoloc>) {
+/**
+ * Reuse the geoloc we already have for this real-world event. Look up by
+ * `eventKey` first (survives ID changes), then fall back to `objectID` for
+ * records that happen to have stable IDs already.
+ */
+function inheritGeoloc(
+  brevet: Brevet,
+  existingGeoById: Map<string, Geoloc>,
+  existingGeoByEventKey: Map<string, Geoloc>,
+) {
   if (brevet._geoloc?.[0]) return brevet;
-
-  const geoLoc = existingGeo.get(brevet.objectID);
-  return geoLoc ? { ...brevet, _geoloc: [geoLoc] } : brevet;
-}
-
-function normalize(value?: string) {
-  return (value || '').trim().toLowerCase();
+  const geo = existingGeoByEventKey.get(eventKey(brevet)) || existingGeoById.get(brevet.objectID);
+  return geo ? { ...brevet, _geoloc: [geo] } : brevet;
 }
 
 const ROUTE_HOSTS = new Set([
@@ -183,8 +191,6 @@ function isLikelyRouteUrl(url: string) {
       );
     }
 
-    // For remaining known hosts (Garmin, MapMagic, Nakarte, BRMTool),
-    // keep host-level acceptance because path formats vary widely.
     return true;
   } catch {
     return false;
@@ -242,193 +248,75 @@ function enrichMapLinks(brevet: Brevet) {
 }
 
 /**
- * Match key for identifying the same real-world event across sources.
- * Uses date + distance + country + city.
+ * Final global collision-safety pass. After merging, two records that survive
+ * as separate events may still share an `objectID` (different sources produced
+ * the same derived ID). Append a salt hash so Algolia doesn't silently
+ * overwrite one with the other.
  */
-function eventKey(b: Brevet) {
-  return [
-    b.date,
-    b.distance,
-    normalize(b.country),
-    normalize(b.city),
-  ].join('|');
-}
+function deduplicateObjectIDs(records: Brevet[]): Brevet[] {
+  const counts = new Map<string, number>();
+  for (const r of records) counts.set(r.objectID, (counts.get(r.objectID) || 0) + 1);
+  if ([...counts.values()].every((c) => c === 1)) return records;
 
-/**
- * More permissive key that ignores city. Used only as a fallback for sparse records.
- */
-function eventKeyNoCity(b: Brevet) {
-  return [b.date, b.distance, normalize(b.country)].join('|');
-}
-
-/**
- * Merge two brevet records into one. `base` is the higher-priority record
- * (supabase), `other` is the enrichment source (scraper).
- *
- * Rules:
- * - Keep base's objectID (supabase canonical ID wins)
- * - Prefer non-empty values from base; fall back to other
- * - `map`: union of both arrays (deduplicated)
- * - `ascent`: prefer other only if > 0 and base has none
- * - `_geoloc`: prefer base if present, then other
- */
-function mergeBrevets(base: Brevet, other: Brevet): Brevet {
-  return {
-    ...base,
-    // Fields where scraper data can enrich supabase
-    map: [
-      ...new Set([...(base.map ?? []), ...(other.map ?? [])]),
-    ],
-    site: base.site || other.site || undefined,
-    mail: base.mail || other.mail || undefined,
-    ascent: (base.ascent ?? (other.ascent && other.ascent > 0 ? other.ascent : undefined)),
-    region: base.region || other.region || undefined,
-    department: base.department || other.department || undefined,
-    city: base.city || other.city || '',
-    _geoloc: base._geoloc?.length ? base._geoloc : other._geoloc,
-  };
-}
-
-/**
- * Conservative merge guard: we only merge when confidence is high.
- * Better keep duplicates than merge unrelated events.
- */
-function canSafelyMerge(base: Brevet, other: Brevet): boolean {
-  if (
-    base.date !== other.date ||
-    base.distance !== other.distance ||
-    normalize(base.country) !== normalize(other.country)
-  ) {
-    return false;
-  }
-
-  const baseCity = normalize(base.city);
-  const otherCity = normalize(other.city);
-
-  // If both cities are present, they must match exactly.
-  if (baseCity && otherCity) {
-    if (baseCity !== otherCity) return false;
-    return true;
-  }
-
-  // Sparse rows (missing city): only merge if we also have a strong identifier.
-  const baseMail = normalize(base.mail);
-  const otherMail = normalize(other.mail);
-  if (baseMail && otherMail && baseMail === otherMail) return true;
-
-  const baseClub = normalize(base.club);
-  const otherClub = normalize(other.club);
-  if (baseClub && otherClub && baseClub === otherClub) return true;
-
-  return false;
-}
-
-function chooseBestCandidate(base: Brevet, candidates: Brevet[]): Brevet | null {
-  const safe = candidates.filter((c) => canSafelyMerge(base, c));
-  if (safe.length === 1) return safe[0];
-  if (safe.length === 0) return null;
-
-  // Ambiguous: try exact mail disambiguation
-  const byMail = safe.filter(
-    (c) => normalize(c.mail) && normalize(c.mail) === normalize(base.mail)
-  );
-  if (byMail.length === 1) return byMail[0];
-
-  // Ambiguous: try exact club disambiguation
-  const byClub = safe.filter(
-    (c) => normalize(c.club) && normalize(c.club) === normalize(base.club)
-  );
-  if (byClub.length === 1) return byClub[0];
-
-  // Still ambiguous: do not merge.
-  return null;
-}
-
-/**
- * Deduplicate and merge records from multiple sources.
- * - Keep all events.
- * - Supabase records are canonical when a merge is confident.
- * - If matching is ambiguous, keep both records.
- * - Collapse exact objectID duplicates only.
- */
-function mergeRecords(records: Brevet[]): Brevet[] {
-  // 1) Remove exact duplicate objectIDs first.
-  const uniqueByObjectID = new Map<string, Brevet>();
-  for (const b of records) {
-    if (!uniqueByObjectID.has(b.objectID)) {
-      uniqueByObjectID.set(b.objectID, b);
-    }
-  }
-
-  const uniqueRecords = [...uniqueByObjectID.values()];
-  const supabase = uniqueRecords.filter((b) => b.objectID.startsWith('supabase__'));
-  const other = uniqueRecords.filter((b) => !b.objectID.startsWith('supabase__'));
-
-  const otherByFullKey = new Map<string, Brevet[]>();
-  const otherByNoCityKey = new Map<string, Brevet[]>();
-  for (const b of other) {
-    const full = eventKey(b);
-    if (!otherByFullKey.has(full)) otherByFullKey.set(full, []);
-    otherByFullKey.get(full)!.push(b);
-
-    const noCity = eventKeyNoCity(b);
-    if (!otherByNoCityKey.has(noCity)) otherByNoCityKey.set(noCity, []);
-    otherByNoCityKey.get(noCity)!.push(b);
-  }
-
-  const consumedOther = new Set<string>();
-  const mergedSupabase: Brevet[] = [];
-
-  for (const b of supabase) {
-    let result = b;
-
-    // Primary: full key match (date+distance+country+city)
-    const fullCandidates = (otherByFullKey.get(eventKey(b)) || []).filter(
-      (x) => !consumedOther.has(x.objectID)
-    );
-    const bestFull = chooseBestCandidate(b, fullCandidates);
-    if (bestFull) {
-      result = mergeBrevets(result, bestFull);
-      consumedOther.add(bestFull.objectID);
-    }
-
-    // Fallback for sparse rows (missing city): use no-city key, but still strict guard.
-    if (!normalize(result.city)) {
-      const sparseCandidates = (otherByNoCityKey.get(eventKeyNoCity(b)) || []).filter(
-        (x) => !consumedOther.has(x.objectID)
-      );
-      const bestSparse = chooseBestCandidate(b, sparseCandidates);
-      if (bestSparse) {
-        result = mergeBrevets(result, bestSparse);
-        consumedOther.add(bestSparse.objectID);
-      }
-    }
-
-    mergedSupabase.push(result);
-  }
-
-  const unmergedOther = other.filter((b) => !consumedOther.has(b.objectID));
-  return [...mergedSupabase, ...unmergedOther];
+  const seen = new Map<string, number>();
+  return records.map((r) => {
+    if ((counts.get(r.objectID) || 0) === 1) return r;
+    const salt = [
+      r.club || '',
+      r.mail || '',
+      r.site || '',
+      r.name || '',
+      r.region || '',
+      r.department || '',
+    ].join('|');
+    const suffix = stableHash(salt.toLowerCase());
+    const candidate = `${r.objectID}__${suffix}`;
+    const nthHere = (seen.get(candidate) || 0) + 1;
+    seen.set(candidate, nthHere);
+    return {
+      ...r,
+      objectID: nthHere === 1 ? candidate : `${candidate}_${nthHere}`,
+    };
+  });
 }
 
 const [data, clubRegistry] = await Promise.all([fetchAllData(), buildClubRegistry()]);
 const withClubSites = enrichBrevets(data, clubRegistry);
-const mergedData = mergeRecords(withClubSites);
+const mergeReport = mergeRecords(withClubSites);
 console.log(
-  `Merged ${data.length} records → ${mergedData.length} (removed ${data.length - mergedData.length} duplicates)`
+  `Merged ${data.length} records → ${mergeReport.records.length} ` +
+    `(merged ${mergeReport.clusters.length} clusters, kept ${mergeReport.ambiguous.length} ambiguous clusters separate)`
 );
 
-const enriched = mergedData.map(enrichMapLinks);
+// Hard assertions: every input record's identity is represented in the output.
+const inputCount = withClubSites.length;
+const losersCount = mergeReport.clusters.reduce((a, c) => a + c.losers.length, 0);
+const outputCount = mergeReport.records.length;
+if (inputCount !== outputCount + losersCount) {
+  throw new Error(
+    `Merge accounting mismatch: input=${inputCount}, output=${outputCount}, losers=${losersCount}`,
+  );
+}
 
-const { existingObjectIDs, existingGeo } = await getExistingData();
+const deduplicatedIDs = deduplicateObjectIDs(mergeReport.records);
+const uniqueIDs = new Set(deduplicatedIDs.map((r) => r.objectID));
+if (uniqueIDs.size !== deduplicatedIDs.length) {
+  throw new Error(
+    `objectID collision after global dedupe: ${deduplicatedIDs.length - uniqueIDs.size} duplicates remain`,
+  );
+}
+
+const enriched = deduplicatedIDs.map(enrichMapLinks);
+
+const { existingObjectIDs, existingGeoById, existingGeoByEventKey } = await getExistingData();
 
 const newBrevets = enriched.filter((b) => !existingObjectIDs.has(b.objectID));
 const existingBrevets = enriched
   .filter((b) => existingObjectIDs.has(b.objectID))
-  .map((b) => inheritGeoloc(b, existingGeo));
+  .map((b) => inheritGeoloc(b, existingGeoById, existingGeoByEventKey));
 
 const needsGeocoding = [
-  ...newBrevets,
+  ...newBrevets.map((b) => inheritGeoloc(b, existingGeoById, existingGeoByEventKey)),
   ...existingBrevets.filter((b) => !b._geoloc?.[0]),
 ];
 const geocoded = await addGeoloc(needsGeocoding);
