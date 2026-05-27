@@ -19,10 +19,14 @@ type Raw = {
 };
 
 async function fetchBrevets(): Promise<Raw[]> {
+  const now = new Date();
+  const until = new Date(now);
+  until.setFullYear(until.getFullYear() + 1);
+
   const url = new URL('https://randonneurs.nl/api/v1/events');
   url.search = new URLSearchParams({
-    from: new Date().toISOString().split('T')[0],
-    until: '2026-01-01',
+    from: now.toISOString().split('T')[0],
+    until: until.toISOString().split('T')[0],
   }).toString();
 
   const events: Raw[] = await fetch(url)
