@@ -95,7 +95,14 @@ async function fetchBrevets(
   }).toString();
 
   const { events = [], ...json }: { events: Raw[]; total_pages: number } =
-    await fetch(url)
+    await fetch(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        Accept: 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9,nl;q=0.8',
+      },
+    })
       .then(checkOk)
       .then((res) => res.json());
 
