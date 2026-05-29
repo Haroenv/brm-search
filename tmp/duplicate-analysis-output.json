@@ -1,0 +1,1069 @@
+{
+  "summary": {
+    "total": 11416,
+    "sourceCounts": {
+      "map": 5486,
+      "acp": 4017,
+      "usa": 940,
+      "auk": 396,
+      "italy": 315,
+      "lrm": 119,
+      "belgium": 88,
+      "ireland": 55
+    },
+    "exactObjectIdDupGroups": 367,
+    "exactObjectIdDupRows": 959,
+    "exactCrossSourceGroups": 71,
+    "exactCrossSourceRows": 142,
+    "strictCrossSourceNonEmptyCityGroups": 2634,
+    "strictCrossSourceNonEmptyCityRows": 5444,
+    "relaxedCrossSourceGroups": 3447,
+    "relaxedCrossSourceRows": 7816
+  },
+  "topStrict": [
+    {
+      "key": "20260502|200|australia|brighton east",
+      "count": 6,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__109070",
+          "date": "02/05/2026",
+          "country": "Australia",
+          "city": "Brighton East",
+          "distance": 200,
+          "category": "200",
+          "name": "Salute to Irene Plowman Matinee",
+          "club": "AU411501"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__109073",
+          "date": "02/05/2026",
+          "country": "Australia",
+          "city": "Brighton East",
+          "distance": 200,
+          "category": "200",
+          "name": "Salute to Irene Plowman Matinee",
+          "club": "AU411501"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__109076",
+          "date": "02/05/2026",
+          "country": "Australia",
+          "city": "Brighton East",
+          "distance": 200,
+          "category": "200",
+          "name": "Salute to Irene Plowman Matinee",
+          "club": "AU411501"
+        },
+        {
+          "src": "acp",
+          "objectID": "02/05/2026__200__Australia__Brighton East",
+          "date": "02/05/2026",
+          "country": "Australia",
+          "city": "Brighton East",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.VICTORIA"
+        },
+        {
+          "src": "acp",
+          "objectID": "02/05/2026__200__Australia__Brighton East",
+          "date": "02/05/2026",
+          "country": "Australia",
+          "city": "Brighton East",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.VICTORIA"
+        }
+      ]
+    },
+    {
+      "key": "20260117|200|australia|brisbane casino",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__109397",
+          "date": "17/01/2026",
+          "country": "Australia",
+          "city": "Brisbane Casino",
+          "distance": 200,
+          "category": "200",
+          "name": "Ride your luck",
+          "club": "AU711501"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__109400",
+          "date": "17/01/2026",
+          "country": "Australia",
+          "city": "Brisbane Casino",
+          "distance": 200,
+          "category": "200",
+          "name": "Ride your luck",
+          "club": "AU711501"
+        },
+        {
+          "src": "acp",
+          "objectID": "17/01/2026__200__Australia__Brisbane Casino",
+          "date": "17/01/2026",
+          "country": "Australia",
+          "city": "Brisbane Casino",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.QUEENSLAND"
+        },
+        {
+          "src": "acp",
+          "objectID": "17/01/2026__200__Australia__Brisbane Casino",
+          "date": "17/01/2026",
+          "country": "Australia",
+          "city": "Brisbane Casino",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.QUEENSLAND"
+        }
+      ]
+    },
+    {
+      "key": "20260328|200|japan|kitakyushu",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__118658",
+          "date": "28/03/2026",
+          "country": "Japan",
+          "city": "Kitakyushu",
+          "distance": 200,
+          "category": "200",
+          "name": "Sieg Zeon!",
+          "club": "JP600026"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__118655",
+          "date": "28/03/2026",
+          "country": "Japan",
+          "city": "Kitakyushu",
+          "distance": 200,
+          "category": "200",
+          "name": "Cherry blossom",
+          "club": "JP600026"
+        },
+        {
+          "src": "acp",
+          "objectID": "28/03/2026__200__Japan__Kitakyushu",
+          "date": "28/03/2026",
+          "country": "Japan",
+          "city": "Kitakyushu",
+          "distance": 200,
+          "category": "200",
+          "club": "Audax Randonneurs Fukuoka"
+        },
+        {
+          "src": "acp",
+          "objectID": "28/03/2026__200__Japan__Kitakyushu",
+          "date": "28/03/2026",
+          "country": "Japan",
+          "city": "Kitakyushu",
+          "distance": 200,
+          "category": "200",
+          "club": "Audax Randonneurs Fukuoka"
+        }
+      ]
+    },
+    {
+      "key": "20260425|200|canada|winnipeg",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__110309",
+          "date": "25/04/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 200,
+          "category": "200",
+          "name": "Great falls",
+          "club": "CA011751"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__110312",
+          "date": "25/04/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 200,
+          "category": "200",
+          "name": "Sandhills Gravel",
+          "club": "CA011751"
+        },
+        {
+          "src": "acp",
+          "objectID": "25/04/2026__200__Canada__Winnipeg",
+          "date": "25/04/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 200,
+          "category": "200",
+          "club": "MANITOBA RANDONNEURS"
+        },
+        {
+          "src": "acp",
+          "objectID": "25/04/2026__200__Canada__Winnipeg",
+          "date": "25/04/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 200,
+          "category": "200",
+          "club": "MANITOBA RANDONNEURS"
+        }
+      ]
+    },
+    {
+      "key": "20260418|200|india|delhi ncr",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__121643",
+          "date": "18/04/2026",
+          "country": "India",
+          "city": "Delhi NCR",
+          "distance": 200,
+          "category": "200",
+          "club": "IN601011"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__121571",
+          "date": "18/04/2026",
+          "country": "India",
+          "city": "Delhi NCR",
+          "distance": 200,
+          "category": "200",
+          "club": "IN601104"
+        },
+        {
+          "src": "acp",
+          "objectID": "18/04/2026__200__India__Delhi NCR",
+          "date": "18/04/2026",
+          "country": "India",
+          "city": "Delhi NCR",
+          "distance": 200,
+          "category": "200",
+          "club": "Delhi Randonneurs"
+        },
+        {
+          "src": "acp",
+          "objectID": "18/04/2026__200__India__Delhi NCR",
+          "date": "18/04/2026",
+          "country": "India",
+          "city": "Delhi NCR",
+          "distance": 200,
+          "category": "200",
+          "club": "Lakshya Randonneurs"
+        }
+      ]
+    },
+    {
+      "key": "20260613|200|france|pantin",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__105007",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Pantin",
+          "distance": 200,
+          "category": "200",
+          "name": "BRM200 DES NANAS",
+          "club": "FR750128"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__120791",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Pantin",
+          "distance": 200,
+          "category": "200",
+          "name": "150km Nanas Gravel",
+          "club": "FR750128"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__200__France__Pantin",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Pantin",
+          "distance": 200,
+          "category": "200",
+          "club": "Audax Club Parisien"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__200__France__Pantin",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Pantin",
+          "distance": 200,
+          "category": "200",
+          "club": "Audax Club Parisien"
+        }
+      ]
+    },
+    {
+      "key": "20260613|600|france|le haillan",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__104626",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Le Haillan",
+          "distance": 600,
+          "category": "600",
+          "name": "Bordeaux - Les Monédières",
+          "club": "FR336860"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__104623",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Le Haillan",
+          "distance": 600,
+          "category": "600",
+          "name": "600 RAA 2026",
+          "club": "FR336860"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__600__France__Le Haillan",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Le Haillan",
+          "distance": 600,
+          "category": "600",
+          "club": "Randonneurs Autonomes Aquitains"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__600__France__Le Haillan",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Le Haillan",
+          "distance": 600,
+          "category": "600",
+          "club": "Randonneurs Autonomes Aquitains"
+        }
+      ]
+    },
+    {
+      "key": "20260523|600|france|laval",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__104773",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Laval",
+          "distance": 600,
+          "category": "600",
+          "name": "Le Flirt avec la Mayenne version Tour de France !",
+          "club": "FR530033"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__120797",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Laval",
+          "distance": 600,
+          "category": "600",
+          "name": "Sur les traces du PBP",
+          "club": "FR910116"
+        },
+        {
+          "src": "acp",
+          "objectID": "23/05/2026__600__France__Laval",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Laval",
+          "distance": 600,
+          "category": "600",
+          "club": "Audax Lavallois"
+        },
+        {
+          "src": "acp",
+          "objectID": "23/05/2026__600__France__Laval",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Laval",
+          "distance": 600,
+          "category": "600",
+          "club": "Union des Audax Français"
+        }
+      ]
+    },
+    {
+      "key": "20261031|200|ukraine|lviv",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__93609",
+          "date": "31/10/2026",
+          "country": "Ukraine",
+          "city": "Lviv",
+          "distance": 200,
+          "category": "200",
+          "name": "Snidanok Na Perevali",
+          "club": "UA550004"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__85164",
+          "date": "31/10/2026",
+          "country": "Ukraine",
+          "city": "Lviv",
+          "distance": 200,
+          "category": "200",
+          "club": "UA550004"
+        },
+        {
+          "src": "acp",
+          "objectID": "31/10/2026__200__Ukraine__Lviv",
+          "date": "31/10/2026",
+          "country": "Ukraine",
+          "city": "Lviv",
+          "distance": 200,
+          "category": "200",
+          "club": "Lviv Bicycle Club"
+        },
+        {
+          "src": "acp",
+          "objectID": "31/10/2026__200__Ukraine__Lviv",
+          "date": "31/10/2026",
+          "country": "Ukraine",
+          "city": "Lviv",
+          "distance": 200,
+          "category": "200",
+          "club": "Lviv Bicycle Club"
+        }
+      ]
+    },
+    {
+      "key": "20260523|600|france|chartres",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__104566",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Chartres",
+          "distance": 600,
+          "category": "600",
+          "name": "BRM600-8000D+ Les sommets normands",
+          "club": "FR282038"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__104569",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Chartres",
+          "distance": 600,
+          "category": "600",
+          "name": "Aux portes du Morvan",
+          "club": "FR282038"
+        },
+        {
+          "src": "acp",
+          "objectID": "23/05/2026__600__France__Chartres",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Chartres",
+          "distance": 600,
+          "category": "600",
+          "club": "Madeleine Sport Détente Chartres"
+        },
+        {
+          "src": "acp",
+          "objectID": "23/05/2026__600__France__Chartres",
+          "date": "23/05/2026",
+          "country": "France",
+          "city": "Chartres",
+          "distance": 600,
+          "category": "600",
+          "club": "Madeleine Sport Détente Chartres"
+        }
+      ]
+    },
+    {
+      "key": "20260509|200|australia|hornsby",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__109040",
+          "date": "09/05/2026",
+          "country": "Australia",
+          "city": "Hornsby",
+          "distance": 200,
+          "category": "200",
+          "name": "River Ride",
+          "club": "AU311501"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__109046",
+          "date": "09/05/2026",
+          "country": "Australia",
+          "city": "Hornsby",
+          "distance": 200,
+          "category": "200",
+          "name": "River Ride",
+          "club": "AU311501"
+        },
+        {
+          "src": "acp",
+          "objectID": "09/05/2026__200__Australia__Hornsby",
+          "date": "09/05/2026",
+          "country": "Australia",
+          "city": "Hornsby",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.NEW SOUTH WALES"
+        },
+        {
+          "src": "acp",
+          "objectID": "09/05/2026__200__Australia__Hornsby",
+          "date": "09/05/2026",
+          "country": "Australia",
+          "city": "Hornsby",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.NEW SOUTH WALES"
+        }
+      ]
+    },
+    {
+      "key": "20260530|200|france|neuilly sur seine",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__105163",
+          "date": "30/05/2026",
+          "country": "France",
+          "city": "Neuilly-sur-Seine",
+          "distance": 200,
+          "category": "200",
+          "name": "Les Pommes de Terre Salées Gravel",
+          "club": "FR924678"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__105154",
+          "date": "30/05/2026",
+          "country": "France",
+          "city": "Neuilly-sur-Seine",
+          "distance": 200,
+          "category": "200",
+          "name": "Les Pommes de Terre Salées 200 km",
+          "club": "FR924678"
+        },
+        {
+          "src": "acp",
+          "objectID": "30/05/2026__200__France__Neuilly-sur-Seine",
+          "date": "30/05/2026",
+          "country": "France",
+          "city": "Neuilly-sur-Seine",
+          "distance": 200,
+          "category": "200",
+          "club": "Vélo Club Neuilly-sur-Seine"
+        },
+        {
+          "src": "acp",
+          "objectID": "30/05/2026__200__France__Neuilly-sur-Seine",
+          "date": "30/05/2026",
+          "country": "France",
+          "city": "Neuilly-sur-Seine",
+          "distance": 200,
+          "category": "200",
+          "club": "Vélo Club Neuilly-sur-Seine"
+        }
+      ]
+    },
+    {
+      "key": "20260613|300|canada|winnipeg",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__110327",
+          "date": "13/06/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 300,
+          "category": "300",
+          "name": "Forest fire 300",
+          "club": "CA011751"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__110330",
+          "date": "13/06/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 300,
+          "category": "300",
+          "name": "River and Roads Gravel 300",
+          "club": "CA011751"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__300__Canada__Winnipeg",
+          "date": "13/06/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 300,
+          "category": "300",
+          "club": "MANITOBA RANDONNEURS"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__300__Canada__Winnipeg",
+          "date": "13/06/2026",
+          "country": "Canada",
+          "city": "Winnipeg",
+          "distance": 300,
+          "category": "300",
+          "club": "MANITOBA RANDONNEURS"
+        }
+      ]
+    },
+    {
+      "key": "20260613|600|france|bellerive sur allier",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__104467",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Bellerive sur Allier",
+          "distance": 600,
+          "category": "600",
+          "name": "BRM 600 Chambord",
+          "club": "FR033658"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__104470",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Bellerive sur Allier",
+          "distance": 600,
+          "category": "600",
+          "name": "BRM 600 Source de la Loire",
+          "club": "FR033658"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__600__France__Bellerive sur Allier",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Bellerive sur Allier",
+          "distance": 600,
+          "category": "600",
+          "club": "Cyclos Randonneurs de Bellerive"
+        },
+        {
+          "src": "acp",
+          "objectID": "13/06/2026__600__France__Bellerive sur Allier",
+          "date": "13/06/2026",
+          "country": "France",
+          "city": "Bellerive sur Allier",
+          "distance": 600,
+          "category": "600",
+          "club": "Cyclos Randonneurs de Bellerive"
+        }
+      ]
+    },
+    {
+      "key": "20260627|300|japan|sodegaura",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__118184",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 300,
+          "category": "300",
+          "name": "MotegiClock",
+          "club": "JP600019"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__118187",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 300,
+          "category": "300",
+          "name": "MotegiRevClock",
+          "club": "JP600019"
+        },
+        {
+          "src": "acp",
+          "objectID": "27/06/2026__300__Japan__Sodegaura",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 300,
+          "category": "300",
+          "club": "Audax Randonneurs Chiba"
+        },
+        {
+          "src": "acp",
+          "objectID": "27/06/2026__300__Japan__Sodegaura",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 300,
+          "category": "300",
+          "club": "Audax Randonneurs Chiba"
+        }
+      ]
+    },
+    {
+      "key": "20260627|600|japan|sodegaura",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__118196",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 600,
+          "category": "600",
+          "name": "MotegiClock",
+          "club": "JP600019"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__118199",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 600,
+          "category": "600",
+          "name": "MotegiRevClock",
+          "club": "JP600019"
+        },
+        {
+          "src": "acp",
+          "objectID": "27/06/2026__600__Japan__Sodegaura",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 600,
+          "category": "600",
+          "club": "Audax Randonneurs Chiba"
+        },
+        {
+          "src": "acp",
+          "objectID": "27/06/2026__600__Japan__Sodegaura",
+          "date": "27/06/2026",
+          "country": "Japan",
+          "city": "Sodegaura",
+          "distance": 600,
+          "category": "600",
+          "club": "Audax Randonneurs Chiba"
+        }
+      ]
+    },
+    {
+      "key": "20260801|600|poland|tarnow",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__110582",
+          "date": "01/08/2026",
+          "country": "Poland",
+          "city": "Tarnów",
+          "distance": 600,
+          "category": "600",
+          "club": "PL121002"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__110594",
+          "date": "01/08/2026",
+          "country": "Poland",
+          "city": "Tarnów",
+          "distance": 600,
+          "category": "600",
+          "club": "PL121002"
+        },
+        {
+          "src": "acp",
+          "objectID": "01/08/2026__600__Poland__Tarnów",
+          "date": "01/08/2026",
+          "country": "Poland",
+          "city": "Tarnów",
+          "distance": 600,
+          "category": "600",
+          "club": "Audax Poland"
+        },
+        {
+          "src": "acp",
+          "objectID": "01/08/2026__600__Poland__Tarnów",
+          "date": "01/08/2026",
+          "country": "Poland",
+          "city": "Tarnów",
+          "distance": 600,
+          "category": "600",
+          "club": "Audax Poland"
+        }
+      ]
+    },
+    {
+      "key": "20260801|300|united kingdom|tewkesbury",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__113903",
+          "date": "01/08/2026",
+          "country": "United Kingdom",
+          "city": "Tewkesbury.",
+          "distance": 300,
+          "category": "300",
+          "club": "GB160050"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__113906",
+          "date": "01/08/2026",
+          "country": "United Kingdom",
+          "city": "Tewkesbury",
+          "distance": 300,
+          "category": "300",
+          "club": "GB160050"
+        },
+        {
+          "src": "acp",
+          "objectID": "01/08/2026__300__United Kingdom__Tewkesbury.",
+          "date": "01/08/2026",
+          "country": "United Kingdom",
+          "city": "Tewkesbury.",
+          "distance": 300,
+          "category": "300",
+          "club": "BlackSheep CC"
+        },
+        {
+          "src": "acp",
+          "objectID": "01/08/2026__300__United Kingdom__Tewkesbury",
+          "date": "01/08/2026",
+          "country": "United Kingdom",
+          "city": "Tewkesbury",
+          "distance": 300,
+          "category": "300",
+          "club": "BlackSheep CC"
+        }
+      ]
+    },
+    {
+      "key": "20260824|200|australia|elwood",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__108773",
+          "date": "24/08/2026",
+          "country": "Australia",
+          "city": "Elwood",
+          "distance": 200,
+          "category": "200",
+          "name": "Discover Your Back Yard - Long Rides",
+          "club": "AU411501"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__108776",
+          "date": "24/08/2026",
+          "country": "Australia",
+          "city": "Elwood",
+          "distance": 200,
+          "category": "200",
+          "name": "Discover Your Back Yard - Long Rides",
+          "club": "AU411501"
+        },
+        {
+          "src": "acp",
+          "objectID": "24/08/2026__200__Australia__Elwood",
+          "date": "24/08/2026",
+          "country": "Australia",
+          "city": "Elwood",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.VICTORIA"
+        },
+        {
+          "src": "acp",
+          "objectID": "24/08/2026__200__Australia__Elwood",
+          "date": "24/08/2026",
+          "country": "Australia",
+          "city": "Elwood",
+          "distance": 200,
+          "category": "200",
+          "club": "A.A.VICTORIA"
+        }
+      ]
+    },
+    {
+      "key": "20260905|300|sweden|barkarby",
+      "count": 4,
+      "sources": [
+        "acp",
+        "map"
+      ],
+      "sample": [
+        {
+          "src": "map",
+          "objectID": "supabase__113480",
+          "date": "05/09/2026",
+          "country": "Sweden",
+          "city": "Barkarby",
+          "distance": 300,
+          "category": "300",
+          "name": "Barkarby 300 Mälaren runt",
+          "club": "SE113004"
+        },
+        {
+          "src": "map",
+          "objectID": "supabase__113477",
+          "date": "05/09/2026",
+          "country": "Sweden",
+          "city": "Barkarby",
+          "distance": 300,
+          "category": "300",
+          "name": "Barkarby 300 Tour de Afrika",
+          "club": "SE113004"
+        },
+        {
+          "src": "acp",
+          "objectID": "05/09/2026__300__Sweden__Barkarby",
+          "date": "05/09/2026",
+          "country": "Sweden",
+          "city": "Barkarby",
+          "distance": 300,
+          "category": "300",
+          "club": "Randonneur Stockholm"
+        },
+        {
+          "src": "acp",
+          "objectID": "05/09/2026__300__Sweden__Barkarby",
+          "date": "05/09/2026",
+          "country": "Sweden",
+          "city": "Barkarby",
+          "distance": 300,
+          "category": "300",
+          "club": "Randonneur Stockholm"
+        }
+      ]
+    }
+  ]
+}
