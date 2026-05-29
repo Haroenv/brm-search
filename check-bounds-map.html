@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Country Bounds Checker</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+      .info {
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      .legend {
+        line-height: 18px;
+        color: #555;
+      }
+      .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const map = L.map('map').setView([20, 0], 2);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(map);
+
+      const countryBounds = {
+        India: [{ minLat: 6, maxLat: 37, minLng: 68, maxLng: 97 }],
+        USA: [
+          {
+            minLat: 24,
+            maxLat: 49,
+            minLng: -125,
+            maxLng: -66,
+            label: 'Continental US',
+          },
+          {
+            minLat: 51,
+            maxLat: 71.5,
+            minLng: -180,
+            maxLng: -129,
+            label: 'Alaska',
+          },
+          {
+            minLat: 18.9,
+            maxLat: 22.3,
+            minLng: -160,
+            maxLng: -154.7,
+            label: 'Hawaii',
+          },
+        ],
+        Belgium: [{ minLat: 49.5, maxLat: 51.5, minLng: 2.5, maxLng: 6.5 }],
+        Netherlands: [{ minLat: 50.7, maxLat: 53.6, minLng: 3.3, maxLng: 7.2 }],
+        France: [{ minLat: 41, maxLat: 51.5, minLng: -5, maxLng: 10 }],
+        'United Kingdom': [{ minLat: 49.9, maxLat: 61, minLng: -8, maxLng: 2 }],
+        Germany: [{ minLat: 47, maxLat: 55, minLng: 5.8, maxLng: 15.1 }],
+        Italy: [{ minLat: 35.5, maxLat: 47.1, minLng: 6.6, maxLng: 18.5 }],
+        Spain: [{ minLat: 36, maxLat: 43.8, minLng: -9.3, maxLng: 4.3 }],
+        Portugal: [{ minLat: 36.9, maxLat: 42.2, minLng: -9.5, maxLng: -6.2 }],
+        Australia: [{ minLat: -44, maxLat: -10, minLng: 113, maxLng: 154 }],
+        Japan: [{ minLat: 24, maxLat: 46, minLng: 123, maxLng: 146 }],
+        Canada: [{ minLat: 41.7, maxLat: 83.1, minLng: -141, maxLng: -52.6 }],
+        Ireland: [{ minLat: 51.4, maxLat: 55.4, minLng: -10.5, maxLng: -5.5 }],
+        Turkiye: [{ minLat: 36, maxLat: 42, minLng: 26, maxLng: 45 }],
+        Turkey: [{ minLat: 36, maxLat: 42, minLng: 26, maxLng: 45 }],
+        Poland: [{ minLat: 49, maxLat: 55, minLng: 14, maxLng: 24.2 }],
+        'Czech Republic': [
+          { minLat: 48.5, maxLat: 51, minLng: 12, maxLng: 18.9 },
+        ],
+        Austria: [{ minLat: 46.4, maxLat: 49, minLng: 9.5, maxLng: 17.2 }],
+        Switzerland: [
+          { minLat: 45.8, maxLat: 47.8, minLng: 5.9, maxLng: 10.5 },
+        ],
+        Sweden: [{ minLat: 55.3, maxLat: 69.1, minLng: 11, maxLng: 24.2 }],
+        Norway: [{ minLat: 57.9, maxLat: 71, minLng: 4.5, maxLng: 31.1 }],
+        Denmark: [{ minLat: 54.5, maxLat: 57.8, minLng: 8, maxLng: 15.2 }],
+        Brazil: [{ minLat: -34, maxLat: 5.3, minLng: -74, maxLng: -34.8 }],
+        Argentina: [
+          { minLat: -55, maxLat: -21.8, minLng: -73.6, maxLng: -53.6 },
+        ],
+        'South Africa': [
+          { minLat: -35, maxLat: -22, minLng: 16.5, maxLng: 33 },
+        ],
+        'New Zealand': [{ minLat: -47, maxLat: -34, minLng: 166, maxLng: 179 }],
+        Mexico: [{ minLat: 14.5, maxLat: 32.7, minLng: -118.4, maxLng: -86.7 }],
+      };
+
+      const colors = [
+        '#e41a1c',
+        '#377eb8',
+        '#4daf4a',
+        '#984ea3',
+        '#ff7f00',
+        '#ffff33',
+        '#a65628',
+        '#f781bf',
+        '#999999',
+      ];
+
+      let colorIndex = 0;
+      Object.entries(countryBounds).forEach(([country, boundsList]) => {
+        const color = colors[colorIndex % colors.length];
+        colorIndex++;
+
+        boundsList.forEach((bounds, idx) => {
+          const rectangle = L.rectangle(
+            [
+              [bounds.minLat, bounds.minLng],
+              [bounds.maxLat, bounds.maxLng],
+            ],
+            {
+              color: color,
+              weight: 2,
+              fillOpacity: 0.1,
+            }
+          ).addTo(map);
+
+          const label =
+            bounds.label ||
+            (boundsList.length > 1 ? `${country} (${idx + 1})` : country);
+          rectangle.bindPopup(`<b>${label}</b><br>
+          Lat: ${bounds.minLat} to ${bounds.maxLat}<br>
+          Lng: ${bounds.minLng} to ${bounds.maxLng}`);
+        });
+      });
+
+      const legend = L.control({ position: 'topright' });
+      legend.onAdd = function () {
+        const div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML =
+          '<h4>Country Bounds</h4>' +
+          '<small>Click rectangles to see country names.<br>' +
+          'These are approximate bounds used for validation.</small>';
+        return div;
+      };
+      legend.addTo(map);
+    </script>
+  </body>
+</html>

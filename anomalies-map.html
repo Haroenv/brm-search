@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Brevets Anomalies Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+      .info {
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        max-width: 300px;
+      }
+      .legend {
+        line-height: 24px;
+        color: #555;
+      }
+      .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        border-radius: 50%;
+      }
+      .stats {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      .stats h3 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+      }
+      .stats div {
+        font-size: 14px;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stats" id="stats"></div>
+    <div id="map"></div>
+    <script>
+      const map = L.map('map').setView([20, 0], 2);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(map);
+
+      // Fetch anomalies
+      fetch('anomalies.json')
+        .then((r) => r.json())
+        .then((anomalies) => {
+          const stats = {
+            total: anomalies.length,
+            missingGeoloc: 0,
+            outOfBounds: 0,
+            byCountry: {},
+          };
+
+          const outOfBoundsMarkers = [];
+          const missingGeolocCountries = {};
+
+          anomalies.forEach((a) => {
+            stats.byCountry[a.country] = (stats.byCountry[a.country] || 0) + 1;
+
+            const hasMissingGeoloc = a.issues.some((i) =>
+              i.includes('Empty _geoloc')
+            );
+            const hasOutOfBounds = a.issues.some(
+              (i) => i.includes('outside') && i.includes('bounds')
+            );
+
+            if (hasMissingGeoloc) {
+              stats.missingGeoloc++;
+              missingGeolocCountries[a.country] =
+                (missingGeolocCountries[a.country] || 0) + 1;
+            }
+
+            if (hasOutOfBounds) {
+              stats.outOfBounds++;
+
+              // Plot these on the map
+              if (a.data._geoloc && a.data._geoloc.length > 0) {
+                const geo = a.data._geoloc[0];
+                const marker = L.circleMarker([geo.lat, geo.lng], {
+                  radius: 6,
+                  fillColor: '#ff0000',
+                  color: '#fff',
+                  weight: 1,
+                  opacity: 1,
+                  fillOpacity: 0.8,
+                }).addTo(map);
+
+                const issuesHtml = a.issues
+                  .map((i) => `<li>${i}</li>`)
+                  .join('');
+                marker.bindPopup(`
+                <b>${a.objectID}</b><br>
+                Country: ${a.country}<br>
+                <b>Issues:</b>
+                <ul style="margin: 5px 0; padding-left: 20px;">${issuesHtml}</ul>
+                <small>Coords: ${geo.lat.toFixed(4)}, ${geo.lng.toFixed(4)}</small><br>
+                <a href="/?objectID=${a.objectID}" target="_blank">Event page</a>
+              `);
+
+                outOfBoundsMarkers.push(marker);
+              }
+            }
+          });
+
+          // Display stats
+          const sortedCountries = Object.entries(stats.byCountry)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+
+          document.getElementById('stats').innerHTML = `
+          <h3>Anomaly Statistics</h3>
+          <div><b>Total:</b> ${stats.total.toLocaleString()}</div>
+          <div style="color: #ff0000;"><b>Out of bounds:</b> ${stats.outOfBounds}</div>
+          <div style="color: #666;"><b>Missing geoloc:</b> ${stats.missingGeoloc}</div>
+          <hr style="margin: 10px 0;">
+          <div style="font-size: 12px; max-height: 200px; overflow-y: auto;">
+            <b>Top countries:</b><br>
+            ${sortedCountries.map(([c, n]) => `${c}: ${n}`).join('<br>')}
+          </div>
+          <div style="margin-top: 10px; font-size: 11px; color: #999;">
+            <b>Missing geoloc by country:</b><br>
+            ${Object.entries(missingGeolocCountries)
+              .slice(0, 5)
+              .map(([c, n]) => `${c}: ${n}`)
+              .join('<br>')}
+          </div>
+        `;
+
+          // Legend
+          const legend = L.control({ position: 'bottomright' });
+          legend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = `
+            <h4>Anomalies</h4>
+            <i style="background: #ff0000"></i> Out of country bounds<br>
+            <small style="color: #999; margin-top: 5px; display: block;">
+              Red markers show events geocoded<br>
+              to the wrong country/region.<br>
+              Missing geolocs not shown.
+            </small>
+          `;
+            return div;
+          };
+          legend.addTo(map);
+
+          // Fit bounds if we have markers
+          if (outOfBoundsMarkers.length > 0) {
+            const group = L.featureGroup(outOfBoundsMarkers);
+            map.fitBounds(group.getBounds().pad(0.1));
+          }
+
+          console.log(
+            `Mapped ${outOfBoundsMarkers.length} out-of-bounds anomalies`
+          );
+        })
+        .catch((err) => {
+          console.error('Error loading anomalies:', err);
+          document.getElementById('stats').innerHTML = `
+          <h3>Error</h3>
+          <div style="color: red;">Failed to load anomalies.json</div>
+        `;
+        });
+    </script>
+  </body>
+</html>
